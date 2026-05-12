@@ -1,0 +1,7 @@
+logfile: /var/log/cloudflared.log
+loglevel: info
+
+ingress:
+  - hostname: easyparkir.romitech.me
+    service: http://web:80
+  - service: http_status:404

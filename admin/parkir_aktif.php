@@ -32,7 +32,7 @@ $data = mysqli_query($koneksi, "
     SELECT km.*, jk.jenis_kendaraan, u.username as petugas 
     FROM kendaraan_masuk km 
     JOIN jenisKendaraan jk ON km.id_jenisKendaraan = jk.id_jenisKendaraan
-    LEFT JOIN user u ON km.id_user = u.id
+    LEFT JOIN users u ON km.id_user = u.id_user
     $filter
     ORDER BY km.waktu_masuk DESC
     LIMIT $start, $per_page

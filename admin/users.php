@@ -14,7 +14,7 @@ if (isset($_POST['tambah'])) {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role = $_POST['role'];
 
-    $query = mysqli_query($koneksi, "INSERT INTO user (username, password, role) VALUES ('$username', '$password', '$role')");
+    $query = mysqli_query($koneksi, "INSERT INTO users (username, password, role) VALUES ('$username', '$password', '$role')");
     if ($query) {
         echo "<script>alert('User berhasil ditambahkan'); window.location='users.php';</script>";
     } else {
@@ -27,7 +27,7 @@ if (isset($_POST['hapus'])) {
     $id = $_POST['id'];
     
     if ($id != $_SESSION['id_user']) {
-        $query = mysqli_query($koneksi, "DELETE FROM user WHERE id = '$id'");
+        $query = mysqli_query($koneksi, "DELETE FROM users WHERE id_user = '$id'");
         if ($query) {
             echo "<script>alert('User berhasil dihapus'); window.location='users.php';</script>";
         } else {
@@ -50,7 +50,7 @@ if (isset($_POST['update'])) {
         $updatePassword = ", password = '$hashed'";
     }
 
-    $query = mysqli_query($koneksi, "UPDATE user SET username='$username', role='$role' $updatePassword WHERE id='$id'");
+    $query = mysqli_query($koneksi, "UPDATE users SET username='$username', role='$role' $updatePassword WHERE id_user='$id'");
     if ($query) {
         echo "<script>alert('User berhasil diupdate'); window.location='users.php';</script>";
     } else {
@@ -63,12 +63,12 @@ $jumlah_per_halaman = 10;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $mulai_dari = ($page > 1) ? ($page * $jumlah_per_halaman) - $jumlah_per_halaman : 0;
 
-$total_result = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM user");
+$total_result = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM users");
 $total_row = mysqli_fetch_assoc($total_result);
 $total_data = $total_row['total'];
 $total_halaman = ceil($total_data / $jumlah_per_halaman);
 
-$query_users = "SELECT * FROM user ORDER BY role ASC LIMIT $mulai_dari, $jumlah_per_halaman";
+$query_users = "SELECT * FROM users ORDER BY role ASC LIMIT $mulai_dari, $jumlah_per_halaman";
 $users = mysqli_query($koneksi, $query_users);
 ?>
 
@@ -139,17 +139,17 @@ $users = mysqli_query($koneksi, $query_users);
                                             </span>
                                         </td>
                                         <td>
-                                            <?php if ($u['id'] != $_SESSION['id_user']): ?>
+                                            <?php if ($u['id_user'] != $_SESSION['id_user']): ?>
                                                 <button class="btn btn-sm btn-outline-primary edit-user" 
                                                         data-bs-toggle="modal" 
                                                         data-bs-target="#editUserModal"
-                                                        data-id="<?= $u['id'] ?>"
+                                                        data-id="<?= $u['id_user'] ?>"
                                                         data-username="<?= $u['username'] ?>"
                                                         data-role="<?= $u['role'] ?>">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                                 <form method="POST" style="display:inline;" onsubmit="return confirm('Hapus user ini?')">
-                                                    <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                                                    <input type="hidden" name="id" value="<?= $u['id_user'] ?>">
                                                     <button type="submit" name="hapus" class="btn btn-sm btn-outline-danger">
                                                         <i class="bi bi-trash"></i>
                                                     </button>

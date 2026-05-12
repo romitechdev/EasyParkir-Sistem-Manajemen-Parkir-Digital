@@ -9,7 +9,7 @@ include "../config/config.php";
 
 // Get logged in user data
 $id = $_SESSION['id_user'];
-$query = mysqli_query($koneksi, "SELECT * FROM user WHERE id = '$id'");
+$query = mysqli_query($koneksi, "SELECT * FROM users WHERE id_user = '$id'");
 $user = mysqli_fetch_assoc($query);
 
 // Process profile update
@@ -34,7 +34,7 @@ if (isset($_POST['update'])) {
     }
 
     if (empty($updatePassword) || strlen($passwordBaru) >= 8) {
-        $update = mysqli_query($koneksi, "UPDATE user SET username='$username' $updatePassword WHERE id = '$id'");
+        $update = mysqli_query($koneksi, "UPDATE users SET username='$username' $updatePassword WHERE id_user = '$id'");
         if ($update) {
             $_SESSION['username'] = $username;
             echo "<script>

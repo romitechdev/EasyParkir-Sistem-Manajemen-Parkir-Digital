@@ -39,7 +39,7 @@ $query = mysqli_query($koneksi, "
     SELECT rk.*, jk.jenis_kendaraan, u.username 
     FROM riwayat_keluar rk 
     JOIN jenisKendaraan jk ON rk.id_jenisKendaraan = jk.id_jenisKendaraan
-    LEFT JOIN user u ON rk.id_user = u.id
+    LEFT JOIN users u ON rk.id_user = u.id_user
     $where_clause
     ORDER BY waktu_keluar DESC
     LIMIT $offset, $per_page

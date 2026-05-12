@@ -5,7 +5,7 @@ include "config.php";
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-$stmt = mysqli_prepare($koneksi, "SELECT id, username, password, role FROM user WHERE username = ?");
+$stmt = mysqli_prepare($koneksi, "SELECT id_user, username, password, role FROM users WHERE username = ?");
 mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -15,7 +15,7 @@ if ($result && mysqli_num_rows($result) === 1) {
 
     if (password_verify($password, $row['password'])) {
         $_SESSION['login'] = true;
-        $_SESSION['id_user'] = $row['id'];
+        $_SESSION['id_user'] = $row['id_user'];
         $_SESSION['username'] = $row['username'];
         $_SESSION['role'] = $row['role'];
 

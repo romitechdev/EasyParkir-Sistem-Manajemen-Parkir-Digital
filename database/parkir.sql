@@ -110,8 +110,8 @@ INSERT INTO `riwayat_keluar` (`id`, `kode_unik`, `nama_kendaraan`, `id_jenisKend
 -- Struktur dari tabel `user`
 --
 
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role` enum('admin','petugas') NOT NULL DEFAULT 'petugas'
@@ -121,11 +121,13 @@ CREATE TABLE `user` (
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `role`) VALUES
+INSERT INTO `users` (`id_user`, `username`, `password`, `role`) VALUES
 (1, 'admin', '$2y$10$vX0Z5vFYkP691V0T2bjx9uo1nja5tQfZi/CWBMkXRtxKQvMwlmsRy', 'admin'),
 (2, 'roy', '$2y$10$VGdBl6g.ucyc0UtiDA/jy.1.XbAiJBsIKpC25sh9xxRJ0agVRWijO', 'petugas'),
 (3, 'kafa', '$2y$10$zPyqT/6uN4c2H89/54kx0uuSR1UnMeRxg1pQE2JjwC4F8fwc8RoJ2', 'petugas'),
-(5, 'pangdi', '$2y$10$skhDG/esyGMGZt7l3pO4Xe0sMSxIkrk.hiPQO3NxUGAeT9eEzlsgq', 'petugas');
+(5, 'pangdi', '$2y$10$skhDG/esyGMGZt7l3pO4Xe0sMSxIkrk.hiPQO3NxUGAeT9eEzlsgq', 'petugas'),
+(6, 'petugas2', '$2y$10$XcDu/w.9JiY4L7blsO5AxeKJtNt.GQQjg.sRj2/967MAfQVt8qh06', 'petugas'),
+(7, 'admin2', '$2y$10$4T6y9kXBypGyhxqGJIBCWeMXlOq6XL3ld973C1aKAEnoNsR9iXloe', 'admin');
 
 --
 -- Indexes for dumped tables

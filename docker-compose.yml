@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:5.7
+    container_name: ep_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: parkir
+      MYSQL_USER: parkiruser
+      MYSQL_PASSWORD: parkirpass
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./docker-entrypoint/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - easyparkir-network
+
+  web:
+    build: .
+    container_name: ep_web
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_USER=parkiruser
+      - DB_PASS=parkirpass
+      - DB_NAME=parkir
+      - DB_PORT=3306
+    networks:
+      - easyparkir-network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: ep_cloudflared
+    restart: unless-stopped
+    working_dir: /home/cloudflared
+    volumes:
+      - ./.cloudflared/config.yml:/home/cloudflared/config.yml:ro
+    command: tunnel --config /home/cloudflared/config.yml run --token eyJhIjoiMmM5OGFjYjhjNDhmOTBkMzA5NmZmZjVkMDY5NzQwMGEiLCJ0IjoiYjY2ODI0NWUtNjc4Mi00Y2NiLWJkOWUtNzM3YzZjNTI4OTMzIiwicyI6Ik1XVTJNbVl4TnpjdE1XSTJNeTAwTWprd0xXSm1ObU10WkdSaFpqSmlNamt3Tm1WbCJ9
+    depends_on:
+      - web
+    networks:
+      - easyparkir-network
+
+volumes:
+  db_data:
+
+networks:
+  easyparkir-network:
+    driver: bridge
